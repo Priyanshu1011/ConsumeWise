@@ -219,11 +219,10 @@ const InputForm = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-y-4 text-blue-800">
+    <div className="flex flex-col items-center justify-center gap-y-4 text-[#00695C]">
       <form
         onSubmit={handleSubmit}
-        className="bg-blue-200 w-[90%] md:w-[60%] lg:w-[33%] p-6 lg:p-10 rounded-lg shadow-md"
-      >
+        className="bg-[#fafafa] w-[90%] md:w-[60%] lg:w-[33%] p-6 lg:p-10 rounded-lg shadow-md">
         {/* Selecting the website */}
         <div className="mb-4">
           <label className="block font-semibold mb-2">Website</label>
@@ -232,9 +231,8 @@ const InputForm = () => {
             value={formData.website}
             onChange={handleInputChange}
             required
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            title="Select the website in which the packaged product is present"
-          >
+            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
+            title="Select the website in which the packaged product is present">
             <option value="">Select a website</option>
             <option value="Amazon">Amazon</option>
             <option value="Flipkart">Flipkart</option>
@@ -253,8 +251,7 @@ const InputForm = () => {
               setIsValid(false); // Reset form validation when changing input type
             }}
             required
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
+            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]">
             <option value="">Select an option</option>
             <option value="Website URL">Website URL</option>
             <option value="Manual Input">Manual Input</option>
@@ -271,7 +268,7 @@ const InputForm = () => {
               name="url"
               value={formData.url}
               onChange={handleInputChange}
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
               placeholder="Enter the website URL"
               required
               autoComplete="off"
@@ -289,7 +286,7 @@ const InputForm = () => {
                 name="productName"
                 value={formData.productName}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
                 placeholder="Enter the product name"
                 title="Enter the name of the packaged product"
                 required
@@ -303,7 +300,7 @@ const InputForm = () => {
                 name="productBrand"
                 value={formData.productBrand}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
                 placeholder="Enter the product brand"
                 title="Enter the brand of the packaged product"
                 required
@@ -316,7 +313,7 @@ const InputForm = () => {
                 name="ingredients"
                 value={formData.ingredients}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
                 placeholder="Enter the ingredients"
                 title="Enter the ingredients of the packaged product"
                 rows="4"
@@ -329,7 +326,7 @@ const InputForm = () => {
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
                 placeholder="Enter the product description"
                 title="Enter the description of the packaged product"
                 rows="4"
@@ -347,7 +344,7 @@ const InputForm = () => {
               name="image"
               accept="image/*"
               onChange={handleImageUpload}
-              className="w-full p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
               required
               title="Upload an image of the packaged product"
             />
@@ -358,25 +355,24 @@ const InputForm = () => {
         {/* {isValid && (
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+            className="w-full bg-[#fafafa] text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
           >
             Submit
           </button>
         )} */}
         <button
           type="submit"
-          className={`w-full bg-blue-500 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+          className={`w-full bg-[#34A853] text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00695C] ${
             isValid ? "" : "opacity-50 cursor-not-allowed"
           }`}
-          disabled={!isValid}
-        >
+          disabled={!isValid}>
           Submit
         </button>
       </form>
 
       {/* Display the response from /extract-data */}
       {responseData && (
-        <div className="mt-6 p-8 bg-blue-100 rounded-lg">
+        <div className="mt-6 p-8 bg-[#fafafa] rounded-lg">
           <h3 className="text-xl text-center font-bold mb-3">
             Product Details
           </h3>
@@ -397,7 +393,7 @@ const InputForm = () => {
 
       {/* Display the final analysis from /analyze-food */}
       {finalAnalysis && (
-        <div className="mt-6 p-8 bg-blue-100 rounded-lg flex flex-col items-center">
+        <div className="mt-6 p-8 bg-[#fafafa] rounded-lg flex flex-col items-center">
           <h3 className="text-xl text-center font-bold mb-3">
             Product Analysis
           </h3>
@@ -421,7 +417,7 @@ const InputForm = () => {
 
       {/* Display the alternatives from /analyze_product */}
       {alternativesResult && (
-        <div className="mt-6 p-8 bg-blue-100 rounded-lg">
+        <div className="mt-6 p-8 bg-[#fafafa] rounded-lg">
           <h3 className="text-xl text-center font-bold mb-3">Alternatives</h3>
           <p>
             <strong>genai_alternatives: </strong>{" "}

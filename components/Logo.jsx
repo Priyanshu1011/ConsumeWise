@@ -1,10 +1,15 @@
+import Image from "next/image";
 
 const Logo = () => {
   return (
-      <div className="text-white">
-          <h1 className="text-2xl font-bold border-2 border-blue-400 rounded-xl px-8 py-4">Logo</h1>
+    <div className="text-white">
+      <Image
+        src={"/images/logo-no-background.png"}
+        width={400}
+        height={200}
+        alt="Logo"></Image>
     </div>
-  )
-}
+  );
+};
 
-export default Logo
+export default Logo;

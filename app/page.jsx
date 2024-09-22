@@ -10,9 +10,9 @@ export default function Home() {
       <main className="py-4 md:py-5">
         <InputForm />
       </main>
-      <footer className="flex items-center justify-center text-white">
+      <footer className="flex items-center justify-center text-black">
         &copy;&nbsp;<span>ConsumeWise</span>
-        <span className="text-blue-100">&nbsp;by Team Gravity</span>
+        <span className="text-green-800">&nbsp;by Team Gravity</span>
       </footer>
     </div>
   );
