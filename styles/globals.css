@@ -30,6 +30,14 @@ body {
   }
 }
 
+ul, ol {
+  list-style-type: initial;
+}
+
+a {
+  text-decoration: initial;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

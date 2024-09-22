@@ -1,0 +1,9 @@
+service_account_key.json
+/Include
+/Lib
+/Scripts
+pyvenv.cfg
+
+__pycache__
+
+.env
