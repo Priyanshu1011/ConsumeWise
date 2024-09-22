@@ -1,5 +1,16 @@
 # ConsumeWise
 
+## ConsumeWise
+
+[![ConsumeWise Cover](https://link_to_your_image.png)](https://www.canva.com/design/DAGReYyNun0/kf9UeXTX68jEb10Tsysmgw)
+
+## About ConsumeWise
+
+ConsumeWise is an AI-enabled smart label reader that helps consumers understand the health impact of packaged food products and nudges them to make better choices.
+
+Check out our website: [https://consume-wise-v1.vercel.app](https://consume-wise-v1.vercel.app)
+
+
 ## About ConsumeWise
 
 ConsumeWise is an AI-enabled smart label reader that helps consumers understand the health impact of packaged food products and nudges them to make better choices.
