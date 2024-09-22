@@ -1,5 +1,7 @@
 # ConsumeWise
 
+[![ConsumeWise Cover](https://github.com/Priyanshu1011/ConsumeWise/raw/main/Cover%20Image/ConsumeWise.png)](https://github.com/Priyanshu1011/ConsumeWise/raw/main/Cover%20Image/ConsumeWise.png)
+
 ## About ConsumeWise
 
 ConsumeWise is an AI-enabled smart label reader that helps consumers understand the health impact of packaged food products and nudges them to make better choices.
