@@ -55,15 +55,9 @@ const InputForm = () => {
       setIsValid(formData.website !== "" && formData.url !== "");
     } else if (inputType === "Manual Input") {
       const { productName, productBrand, ingredients, description } = formData;
-      setIsValid(
-        formData.website !== "" &&
-          productName &&
-          productBrand &&
-          ingredients &&
-          description
-      );
+      setIsValid(productName && productBrand && ingredients && description);
     } else if (inputType === "Image Upload") {
-      setIsValid(formData.image != null && formData.website !== "");
+      setIsValid(formData.image != null);
     }
   };
 
