@@ -7,6 +7,7 @@ import re
 from google.generativeai import configure, GenerativeModel
 import google.generativeai as genai
 import os
+import random
 
 app = Flask(__name__)
 CORS(app)
@@ -27,8 +28,14 @@ class FoodItemRequest(BaseModel):
     ingredients: str
 
 # Set headers to mimic a browser request
+user_agents = [
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+]
+
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    'User-Agent': random.choice(user_agents),
     'Accept-Language': 'en-US,en;q=0.9',
 }
 
