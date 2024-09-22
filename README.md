@@ -4,7 +4,7 @@
 
 ConsumeWise is an AI-enabled smart label reader that helps consumers understand the health impact of packaged food products and nudges them to make better choices.
 
-Check out our website: https://consume-wise-v1.vercel.app
+Check out our website: [https://consume-wise-v1.vercel.app](https://consume-wise-v1.vercel.app)
 
 ## Setup for Developers
 
@@ -48,7 +48,7 @@ pip install -r requirements.txt
 
 - Run the development server: 
 ```bash
-python backend.py
+python app.py
 ```
 
 - Endpoints to test:
