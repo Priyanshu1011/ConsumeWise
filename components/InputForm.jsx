@@ -381,27 +381,24 @@ const InputForm = () => {
           </h3>
           <div
             dangerouslySetInnerHTML={{ __html: finalAnalysis }}
-            id="analysis_html"
-          ></div>
+            id="analysis_html"></div>
         </div>
       )}
 
       {/* Display the alternatives from /analyze_product */}
-      {alternativesResult && (
+      {alternatives && (
         <div className="mt-6 p-8 bg-[#fafafa] rounded-lg">
           <h3 className="text-xl text-center font-bold mb-3">Alternatives</h3>
           <div
             dangerouslySetInnerHTML={{ __html: alternatives }}
-            id="alternatives_html"
-          ></div>
+            id="alternatives_html"></div>
         </div>
       )}
       {/* A button to refresh page and check another product */}
       {alternatives && (
         <button
           onClick={refreshPage}
-          className="my-4 px-4 py-2 bg-blue-100 font-semibold rounded-lg shadow-md hover:bg-blue-200 hover:shadow-lg focus:outline-none"
-        >
+          className="my-4 px-4 py-2 bg-blue-100 font-semibold rounded-lg shadow-md hover:bg-blue-200 hover:shadow-lg focus:outline-none">
           Check Another Product
         </button>
       )}
