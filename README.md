@@ -2,7 +2,7 @@
 
 ## ConsumeWise
 
-[![ConsumeWise Cover](https://link_to_your_image.png)](https://www.canva.com/design/DAGReYyNun0/kf9UeXTX68jEb10Tsysmgw)
+[![ConsumeWise Cover](https://link_to_your_image.png)]([https://www.canva.com/design/DAGReYyNun0/kf9UeXTX68jEb10Tsysmgw](https://github.com/Priyanshu1011/ConsumeWise/blob/main/Cover%20Image/ConsumeWise.png?raw=true))
 
 ## About ConsumeWise
 
