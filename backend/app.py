@@ -8,30 +8,31 @@ from google.generativeai import configure, GenerativeModel
 import google.generativeai as genai
 import os
 import random
-
 from werkzeug.utils import secure_filename
 import gemini_api
-
-app = Flask(__name__)
-CORS(app)
-
 
 # Configure upload folder and allowed file extensions
 UPLOAD_FOLDER = 'uploads/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
+# Set headers to mimic a browser request
+user_agents = [
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+]
+headers = {
+    'User-Agent': random.choice(user_agents),
+    'Accept-Language': 'en-US,en;q=0.9',
+}
+
+app = Flask(__name__)
+CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Ensure the upload folder exists
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 # Setting up the Google Gemini API
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
@@ -47,18 +48,6 @@ class FoodItemRequest(BaseModel):
     brand: str
     description: str
     ingredients: str
-
-# Set headers to mimic a browser request
-user_agents = [
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-]
-
-headers = {
-    'User-Agent': random.choice(user_agents),
-    'Accept-Language': 'en-US,en;q=0.9',
-}
 
 # Amazon scraper function
 def amazon_scraper(url):
@@ -192,6 +181,9 @@ def suggest_healthy_alternatives(food_item):
 
     except Exception as e:
         raise Exception(f"Error suggesting alternatives: {str(e)}")
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/analyze-food', methods=['POST'])
