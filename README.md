@@ -4,16 +4,55 @@
 
 ConsumeWise is an AI-enabled smart label reader that helps consumers understand the health impact of packaged food products and nudges them to make better choices.
 
-## Getting Started
+Check out our website: | Deployed frontend link |
 
-1. Install the dependencies: 
+## Setup for Developers
+
+- Clone the repository
+```bash
+git clone https://github.com/Priyanshu1011/ConsumeWise.git
+```
+
+- Change the working directory
+```bash
+cd ConsumeWise/
+```
+
+### Setting up the Frontend
+- Create a `.env` file similar to `.env.sample`
+
+- Update the environment variables as instructed.
+
+- Install the dependencies: 
 ```bash
 npm install
 ```
 
-2. Run the development server: 
+- Run the development server: 
 ```bash
 npm run dev
 ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+- Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Setting up the Backend
+- Change the working directory
+```bash
+cd backend/
+```
+
+- Install the dependencies: 
+```bash
+pip install -r requirements.txt
+```
+
+- Run the development server: 
+```bash
+python backend.py
+```
+
+- Endpoints to test:
+    - `GET /`: To check if the server is running.
+    - `POST /extract-data`: To scrape the product data from other websites.
+    - `POST /analyze-food`: To generate an analysis report and healthy alternatives of the food product.
+    - `POST /upload`: To extract the product data from the uploaded image.

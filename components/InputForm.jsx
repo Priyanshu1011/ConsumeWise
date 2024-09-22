@@ -1,9 +1,16 @@
 "use client";
-import unhealthyKeywords from "@/utils/constants";
 import { useState } from "react";
-// import { useRouter } from "next/navigation";
+import Loader from "./Loader";
 
 const InputForm = () => {
+  const backendRootURL = process.env.NEXT_PUBLIC_BACKEND_ROOT_URL;
+  const scraperEndpoint = backendRootURL + "/extract-data";
+  const analyzeFoodEndpoint = backendRootURL + "/analyze-food";
+  const imageOCREndpoint =
+    process.env.NEXT_PUBLIC_ENV === "DEVELOPMENT_ENV"
+      ? backendRootURL + "/upload"
+      : process.env.NEXT_PUBLIC_IMAGE_OCR_ROOT_URL;
+
   const [inputType, setInputType] = useState("");
   const [formData, setFormData] = useState({
     website: "",
@@ -14,12 +21,17 @@ const InputForm = () => {
     description: "",
     image: "",
   });
-
-  const [isValid, setIsValid] = useState(false);
+  const [isValid, setIsValid] = useState(false); // If the form inputs submitted are valid or not
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false); // If form has been submitted
   const [responseData, setResponseData] = useState(null); // response from /extract-data
-  const [finalAnalysis, setFinalAnalysis] = useState(null); // response from /analyze-food
-  const [alternativesResult, setAlternativesResult] = useState(null); // response from /analyze_product (alternatives.py)
-  //   const router = useRouter();
+  const [finalAnalysis, setFinalAnalysis] = useState(null);
+  const [alternatives, setAlternatives] = useState(null);
+  const [showModal, setShowModal] = useState(false); // Should the error modal popup be shown
+  const [modalMessage, setModalMessage] = useState(""); // Modal message to be shown
+
+  const refreshPage = () => {
+    window.location.reload();
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -55,25 +67,15 @@ const InputForm = () => {
     }
   };
 
-  function checkIsUnhealthy(analysisObject) {
-    const content = analysisObject.report;
-    const lowercasedContent = content.toLowerCase();
-
-    // Check if any unhealthy keywords exist in the description
-    for (const keyword of unhealthyKeywords) {
-      if (lowercasedContent.includes(keyword)) {
-        return true; // Unhealthy food detected
-      }
-    }
-    return false; // No unhealthy indicators found
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsFormSubmitted(true);
     if (isValid) {
       if (inputType === "Website URL") {
+        // Web URL pipeline: /extract-data => /analyze-food
         try {
-          const response = await fetch("http://localhost:5000/extract-data", {
+          // 1. Web scrapper endpoint is called
+          const response = await fetch(scraperEndpoint, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -85,67 +87,23 @@ const InputForm = () => {
             console.log("Successfully received a response from /extract-data");
             const result = await response.json();
             setResponseData(result);
-            // console.log("responseData: " + responseData);
 
-            const analysisResponse = await fetch(
-              "http://localhost:5001/analyze-food",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(result),
-              }
-            );
-
-            const categorizeObj = {
-              name: result.food_item_name,
-              ingredients: result.food_item_ingredients,
-              description: result.food_item_description,
-              brand: result.food_item_brand,
-            };
-            const categorizeResponse = await fetch(
-              "http://localhost:5002/categorize",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(categorizeObj),
-              }
-            );
+            // 2. Food analysis endpoint is called
+            const analysisResponse = await fetch(analyzeFoodEndpoint, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(result),
+            });
 
             if (analysisResponse.ok) {
               console.log(
                 "Successfully received a response from /analyze-food"
               );
               const analysisResult = await analysisResponse.json();
-              setFinalAnalysis(analysisResult);
-              // console.log("finalAnalysis: " + finalAnalysis);
-              // router.push("/results");
-              const isUnhealthy = checkIsUnhealthy(analysisResult);
-              if (isUnhealthy) {
-                const alternativesResponse = await fetch(
-                  "http://localhost:5003/analyze_product",
-                  {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(result),
-                  }
-                );
-                if (alternativesResponse.ok) {
-                  console.log(
-                    "Successfully received a response from /analyze_product"
-                  );
-                  const alternatives = await alternativesResponse.json();
-                  setAlternativesResult(alternatives);
-                  // console.log("alternativesResult: " + alternativesResult);
-                } else {
-                  console.error("Failed to fetch data from /analyze_product");
-                }
-              }
+              setFinalAnalysis(analysisResult.html_analysis);
+              setAlternatives(analysisResult.healthy_alternatives);
             } else {
               console.error("Failed to fetch data from /analyze-food");
             }
@@ -153,63 +111,87 @@ const InputForm = () => {
             console.error("Failed to fetch data from /extract-data");
           }
         } catch (error) {
+          setModalMessage("Oops! Something went wrong 😟");
+          setShowModal(true);
           console.error("Error:", error);
         }
       } else if (inputType === "Manual Input") {
-        formDataToSend.append("food_item_name", formData.productName);
-        formDataToSend.append("food_item_brand", formData.productBrand);
-        formDataToSend.append("food_item_ingredients", formData.ingredients);
-        formDataToSend.append("food_item_description", formData.description);
-        // Send request to /analyze-food => alternatives
-
+        // Manual input pipeline: /analyze-food
         try {
-          const analysisResponse = await fetch(
-            "http://localhost:5001/analyze-food",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: formDataToSend,
-            }
-          );
+          const request = {
+            food_item_name: formData.productName,
+            food_item_brand: formData.productBrand,
+            food_item_ingredients: formData.ingredients,
+            food_item_description: formData.description,
+          };
+          setResponseData(request);
+
+          // 1. Food analysis endpoint is called
+          const analysisResponse = await fetch(analyzeFoodEndpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request),
+          });
 
           if (analysisResponse.ok) {
             console.log("Successfully received a response from /analyze-food");
             const analysisResult = await analysisResponse.json();
-            setFinalAnalysis(analysisResult);
-            // router.push("/results");
-            const isUnhealthy = checkIsUnhealthy(analysisResult);
-            if (isUnhealthy) {
-              const alternativesResponse = await fetch(
-                "http://localhost:5003/analyze_product",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: formDataToSend,
-                }
-              );
-              if (alternativesResponse.ok) {
-                console.log(
-                  "Successfully received a response from /analyze_product"
-                );
-                const alternatives = await alternativesResponse.json();
-                setAlternativesResult(alternatives);
-              } else {
-                console.error("Failed to fetch data from /analyze_product");
-              }
-            }
+            setFinalAnalysis(analysisResult.html_analysis);
+            setAlternatives(analysisResult.healthy_alternatives);
           } else {
             console.error("Failed to fetch data from /analyze-food");
           }
         } catch (error) {
-          console.error("Error: ", error);
+          setModalMessage("Oops! Something went wrong 😟");
+          setShowModal(true);
+          console.error("Error:", error);
         }
       } else if (inputType === "Image Upload") {
-        formDataToSend.append("image", formData.image);
-        // Send request to /image-ocr-extraction => /analyze-food => alternatives
+        // Image Upload pipeline: /img-ocr => /analyze-food
+        try {
+          const request = new FormData();
+          request.append("file", formData.image);
+
+          // 1. Image OCR endpoint is called
+          const ocrResponse = await fetch(imageOCREndpoint, {
+            method: "POST",
+            body: request,
+          });
+
+          if (ocrResponse.ok) {
+            console.log("Successfully received a response from /img-ocr");
+            const result = await ocrResponse.json();
+            setResponseData(result);
+
+            // 2. Food analysis endpoint is called
+            const analysisResponse = await fetch(analyzeFoodEndpoint, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(result),
+            });
+
+            if (analysisResponse.ok) {
+              console.log(
+                "Successfully received a response from /analyze-food"
+              );
+              const analysisResult = await analysisResponse.json();
+              setFinalAnalysis(analysisResult.html_analysis);
+              setAlternatives(analysisResult.healthy_alternatives);
+            } else {
+              console.error("Failed to fetch data from /analyze-food");
+            }
+          } else {
+            console.error("Failed to fetch data from /img-ocr");
+          }
+        } catch (error) {
+          setModalMessage("Oops! Something went wrong 😟");
+          setShowModal(true);
+          console.error("Error:", error);
+        }
       }
     } else {
       alert(
@@ -220,6 +202,23 @@ const InputForm = () => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-y-4 text-blue-800">
+      {showModal ? (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white flex flex-col items-center rounded-lg shadow-lg p-10 w-[32%]">
+            <p className="text-gray-600 mb-6">{modalMessage}</p>
+            <button
+              className="bg-green-500 text-white font-semibold py-2 px-4 rounded focus:outline-none"
+              onClick={() => {
+                setShowModal(false);
+                setModalMessage("");
+                refreshPage();
+              }}
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      ) : null}
       <form
         onSubmit={handleSubmit}
         className="bg-blue-200 w-[90%] md:w-[60%] lg:w-[33%] p-6 lg:p-10 rounded-lg shadow-md"
@@ -373,8 +372,8 @@ const InputForm = () => {
           Submit
         </button>
       </form>
-
       {/* Display the response from /extract-data */}
+      {isFormSubmitted && !responseData && <Loader />}
       {responseData && (
         <div className="mt-6 p-8 bg-blue-100 rounded-lg">
           <h3 className="text-xl text-center font-bold mb-3">
@@ -394,44 +393,37 @@ const InputForm = () => {
           </p>
         </div>
       )}
-
       {/* Display the final analysis from /analyze-food */}
+      {isFormSubmitted && !finalAnalysis && <Loader />}
       {finalAnalysis && (
         <div className="mt-6 p-8 bg-blue-100 rounded-lg flex flex-col items-center">
           <h3 className="text-xl text-center font-bold mb-3">
             Product Analysis
           </h3>
-          {/* <p>
-            <strong>Message: </strong> {finalAnalysis.message}
-          </p> */}
-          {/* <p>
-            <strong>PDF Filename: </strong> {finalAnalysis.pdf_filename}
-          </p> */}
-          <p>
-            {/* <strong>Report: </strong> */}
-            {finalAnalysis.report}
-          </p>
-          {/* <button className="bg-green-500 text-white w-[250px] py-2 px-4 rounded-md mt-4 focus:outline-none focus:ring-2 focus:ring-green-600">
-            <a href="" download>
-              Download as PDF
-            </a>
-          </button> */}
+          <div
+            dangerouslySetInnerHTML={{ __html: finalAnalysis }}
+            id="analysis_html"
+          ></div>
         </div>
       )}
-
-      {/* Display the alternatives from /analyze_product */}
-      {alternativesResult && (
+      {/* Display the alternatives from /analyze-food */}
+      {alternatives && (
         <div className="mt-6 p-8 bg-blue-100 rounded-lg">
           <h3 className="text-xl text-center font-bold mb-3">Alternatives</h3>
-          <p>
-            <strong>genai_alternatives: </strong>{" "}
-            {alternativesResult.genai_alternatives}
-          </p>
-          <p>
-            <strong>db_alternatives: </strong>{" "}
-            {alternativesResult.db_alternatives}
-          </p>
+          <div
+            dangerouslySetInnerHTML={{ __html: alternatives }}
+            id="alternatives_html"
+          ></div>
         </div>
+      )}
+      {/* A button to refresh page and check another product */}
+      {alternatives && (
+        <button
+          onClick={refreshPage}
+          className="my-4 px-4 py-2 bg-blue-100 font-semibold rounded-lg shadow-md hover:bg-blue-200 hover:shadow-lg focus:outline-none"
+        >
+          Check Another Product
+        </button>
       )}
     </div>
   );
