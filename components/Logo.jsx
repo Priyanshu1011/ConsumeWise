@@ -4,7 +4,7 @@ const Logo = () => {
   return (
     <div className="text-white">
       <Image
-        src={"/images/logo-no-background.png"}
+        src={"/assets/logo-no-background.png"}
         width={400}
         height={200}
         alt="Logo"></Image>
