@@ -8,6 +8,7 @@ from google.generativeai import configure, GenerativeModel
 import google.generativeai as genai
 import os
 import random
+from scrapingbee import ScrapingBeeClient
 from werkzeug.utils import secure_filename
 import gemini_api
 import json
@@ -17,16 +18,9 @@ import difflib
 UPLOAD_FOLDER = 'uploads/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
-# Set headers to mimic a browser request
-user_agents = [
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-]
-headers = {
-    'User-Agent': random.choice(user_agents),
-    'Accept-Language': 'en-US,en;q=0.9',
-}
+# ScrapingBee client setup
+SCRAPINGBEE_API_KEY = os.environ.get('SCRAPINGBEE_API_KEY')  # Set your ScrapingBee API key
+scrapingbee_client = ScrapingBeeClient(api_key=SCRAPINGBEE_API_KEY)
 
 app = Flask(__name__)
 CORS(app)
@@ -53,7 +47,7 @@ class FoodItemRequest(BaseModel):
 
 # Amazon scraper function
 def amazon_scraper(url):
-    response = requests.get(url, headers=headers)
+    response = scrapingbee_client.get(url, params={'render_js': 'true'})
     if response.status_code == 200:
         html_text = response.text
         soup = BeautifulSoup(html_text, 'lxml')
@@ -79,7 +73,7 @@ def amazon_scraper(url):
 
 # Flipkart scraper function
 def flipkart_scraper(url):
-    response = requests.get(url, headers=headers)
+    response = scrapingbee_client.get(url, params={'render_js': 'true'})
 
     if response.status_code == 200:
         html_text = response.text
