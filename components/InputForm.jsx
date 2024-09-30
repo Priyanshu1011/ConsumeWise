@@ -61,6 +61,16 @@ const InputForm = () => {
     }
   };
 
+  const isValidURL = (url) => {
+    try {
+      new URL(url);
+      // return true;
+    } catch (error) {
+      // return false;
+      throw new Error("Invalid URL: " + url);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsFormSubmitted(true);
@@ -68,6 +78,8 @@ const InputForm = () => {
       if (inputType === "Website URL") {
         // Web URL pipeline: /extract-data => /analyze-food
         try {
+          // isValidURL(formData.url);
+
           // 1. Web scrapper endpoint is called
           const response = await fetch(scraperEndpoint, {
             method: "POST",
@@ -188,7 +200,7 @@ const InputForm = () => {
         }
       }
     } else {
-      alert(
+      console.log(
         "Please fill out either Website URL, Ingredients, or upload an image."
       );
     }
@@ -196,9 +208,27 @@ const InputForm = () => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-y-4 text-[#00695C]">
+      {showModal ? (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white flex flex-col items-center rounded-lg shadow-lg p-10 w-[32%]">
+            <p className="text-gray-600 mb-6">{modalMessage}</p>
+            <button
+              className="bg-green-500 text-white font-semibold py-2 px-4 rounded focus:outline-none"
+              onClick={() => {
+                setShowModal(false);
+                setModalMessage("");
+                refreshPage();
+              }}
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      ) : null}
       <form
         onSubmit={handleSubmit}
-        className="bg-[#fafafa] w-[90%] md:w-[60%] lg:w-[33%] p-6 lg:p-10 rounded-lg shadow-md">
+        className="bg-[#fafafa] w-[90%] md:w-[60%] lg:w-[33%] p-6 lg:p-10 rounded-lg shadow-md"
+      >
         {/* Selecting the website */}
         <div className="mb-4">
           <label className="block font-semibold mb-2">Website</label>
@@ -208,7 +238,8 @@ const InputForm = () => {
             onChange={handleInputChange}
             required
             className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
-            title="Select the website in which the packaged product is present">
+            title="Select the website in which the packaged product is present"
+          >
             <option value="">Select a website</option>
             <option value="Amazon">Amazon</option>
             <option value="Flipkart">Flipkart</option>
@@ -227,7 +258,8 @@ const InputForm = () => {
               setIsValid(false); // Reset form validation when changing input type
             }}
             required
-            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]">
+            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
+          >
             <option value="">Select an option</option>
             <option value="Website URL">Website URL</option>
             <option value="Manual Input">Manual Input</option>
@@ -341,7 +373,8 @@ const InputForm = () => {
           className={`w-full bg-[#34A853] text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00695C] ${
             isValid ? "" : "opacity-50 cursor-not-allowed"
           }`}
-          disabled={!isValid}>
+          disabled={!isValid}
+        >
           Submit
         </button>
       </form>
@@ -375,7 +408,8 @@ const InputForm = () => {
           </h3>
           <div
             dangerouslySetInnerHTML={{ __html: finalAnalysis }}
-            id="analysis_html"></div>
+            id="analysis_html"
+          ></div>
         </div>
       )}
 
@@ -385,14 +419,16 @@ const InputForm = () => {
           <h3 className="text-xl text-center font-bold mb-3">Alternatives</h3>
           <div
             dangerouslySetInnerHTML={{ __html: alternatives }}
-            id="alternatives_html"></div>
+            id="alternatives_html"
+          ></div>
         </div>
       )}
       {/* A button to refresh page and check another product */}
       {alternatives && (
         <button
           onClick={refreshPage}
-          className="my-4 px-4 py-2 bg-blue-100 font-semibold rounded-lg shadow-md hover:bg-blue-200 hover:shadow-lg focus:outline-none">
+          className="my-4 px-4 py-2 bg-blue-100 font-semibold rounded-lg shadow-md hover:bg-blue-200 hover:shadow-lg focus:outline-none"
+        >
           Check Another Product
         </button>
       )}
