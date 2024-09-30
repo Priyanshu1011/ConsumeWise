@@ -87,12 +87,12 @@ python app.py
 
   ```
   {
-    "food_item_name": "Doritos Nacho Chips - Nacho Cheese Flavour",
+    "item_name": "Doritos Nacho Chips - Nacho Cheese Flavour",
 
-    "food_item_ingredients": "Corn (77%), Edible Vegetable Oli (Palmolein), Seasoning (Milk Solids, Refined Wheat Flour, Iodised Salt, Flavour (Natural and Nature Identical Flavouring Substances), Cheese Powder, Tomato Powder, Spices & Condiments, Anticaking agent (551), Color (160c), Acidity Regulator (330)). As flavouring agent. Contains Onion and Garlic.",
+    "item_ingredients": "Corn (77%), Edible Vegetable Oli (Palmolein), Seasoning (Milk Solids, Refined Wheat Flour, Iodised Salt, Flavour (Natural and Nature Identical Flavouring Substances), Cheese Powder, Tomato Powder, Spices & Condiments, Anticaking agent (551), Color (160c), Acidity Regulator (330)). As flavouring agent. Contains Onion and Garlic.",
 
-    "food_item_description": "This is a Vegetarian product. About this item: BOLD FLAVOUR: Savory Nacho Cheese flavour that will ignite your senses. SELECT GOLDEN CORN: Made from select golden corn of the highest quality. EXTREME CRUNCH: A snack that you can not only taste but also hear. EDGY TRIANGULAR SHAPE: A nacho chip that's always on point. VERSATILE SNACK: Enjoy it by itself or with a salsa dip. SHELF LIFE: Best quality and flavour if consumed within 180 days. See more product details",
-    
-      "food_item_brand": "Doritos"
+    "item_description": "This is a Vegetarian product. About this item: BOLD FLAVOUR: Savory Nacho Cheese flavour that will ignite your senses. SELECT GOLDEN CORN: Made from select golden corn of the highest quality. EXTREME CRUNCH: A snack that you can not only taste but also hear. EDGY TRIANGULAR SHAPE: A nacho chip that's always on point. VERSATILE SNACK: Enjoy it by itself or with a salsa dip. SHELF LIFE: Best quality and flavour if consumed within 180 days. See more product details",
+
+      "item_brand": "Doritos"
   }
   ```

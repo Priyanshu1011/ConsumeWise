@@ -7,3 +7,6 @@ pyvenv.cfg
 __pycache__
 
 .env
+
+images
+uploads

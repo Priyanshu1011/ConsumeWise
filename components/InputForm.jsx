@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Loader from "./Loader";
 
 const InputForm = () => {
   const backendRootURL = process.env.NEXT_PUBLIC_BACKEND_ROOT_URL;
   const scraperEndpoint = backendRootURL + "/extract-data";
   const analyzeFoodEndpoint = backendRootURL + "/analyze-food";
+  const testDataEndpoint = backendRootURL + "/get-data";
   const imageOCREndpoint =
     process.env.NEXT_PUBLIC_ENV === "DEVELOPMENT_ENV"
       ? backendRootURL + "/upload"
@@ -43,9 +44,10 @@ const InputForm = () => {
   };
 
   const handleImageUpload = (e) => {
+    const { name, files } = e.target;
     setFormData({
       ...formData,
-      image: e.target.files[0],
+      [name]: files[0],
     });
     validateForm();
   };
@@ -57,10 +59,31 @@ const InputForm = () => {
       const { productName, productBrand, ingredients, description } = formData;
       setIsValid(productName && productBrand && ingredients && description);
     } else if (inputType === "Image Upload") {
-      setIsValid(formData.image != null);
+      setIsValid(formData.frontImage && formData.backImage);
     }
   };
+  const canvasRef = useRef(null);
+  const combineImages = (frontImage, backImage) => {
+    return new Promise((resolve) => {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      const img1 = new Image();
+      const img2 = new Image();
 
+      img1.onload = () => {
+        canvas.width = img1.width;
+        canvas.height = img1.height * 2; // Make room for both images
+        ctx.drawImage(img1, 0, 0);
+
+        img2.onload = () => {
+          ctx.drawImage(img2, 0, img1.height);
+          canvas.toBlob(resolve, "image/jpeg");
+        };
+        img2.src = URL.createObjectURL(backImage);
+      };
+      img1.src = URL.createObjectURL(frontImage);
+    });
+  };
   const isValidURL = (url) => {
     try {
       new URL(url);
@@ -125,10 +148,10 @@ const InputForm = () => {
         // Manual input pipeline: /analyze-food
         try {
           const request = {
-            food_item_name: formData.productName,
-            food_item_brand: formData.productBrand,
-            food_item_ingredients: formData.ingredients,
-            food_item_description: formData.description,
+            item_name: formData.productName,
+            item_brand: formData.productBrand,
+            item_ingredients: formData.ingredients,
+            item_description: formData.description,
           };
           setResponseData(request);
 
@@ -157,9 +180,12 @@ const InputForm = () => {
       } else if (inputType === "Image Upload") {
         // Image Upload pipeline: /img-ocr => /analyze-food
         try {
+          const combinedImageBlob = await combineImages(
+            formData.frontImage,
+            formData.backImage
+          );
           const request = new FormData();
-          request.append("file", formData.image);
-
+          request.append("file", combinedImageBlob, "combined_image.jpg");
           // 1. Image OCR endpoint is called
           const ocrResponse = await fetch(imageOCREndpoint, {
             method: "POST",
@@ -172,7 +198,7 @@ const InputForm = () => {
             setResponseData(result);
 
             // 2. Food analysis endpoint is called
-            const analysisResponse = await fetch(analyzeFoodEndpoint, {
+            const analysisResponse = await fetch(testDataEndpoint, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -227,8 +253,7 @@ const InputForm = () => {
       ) : null}
       <form
         onSubmit={handleSubmit}
-        className="bg-[#fafafa] w-[90%] md:w-[60%] lg:w-[33%] p-6 lg:p-10 rounded-lg shadow-md"
-      >
+        className="bg-[#fafafa] w-[90%] md:w-[60%] lg:w-[33%] p-6 lg:p-10 rounded-lg shadow-[20px_20px_60px_#bebebe,-20px_-20px_60px_#ffffff]">
         {/* Selecting the website */}
         <div className="mb-4">
           <label className="block font-semibold mb-2">Website</label>
@@ -236,7 +261,6 @@ const InputForm = () => {
             name="website"
             value={formData.website}
             onChange={handleInputChange}
-            required
             className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
             title="Select the website in which the packaged product is present"
           >
@@ -257,9 +281,7 @@ const InputForm = () => {
               setInputType(e.target.value);
               setIsValid(false); // Reset form validation when changing input type
             }}
-            required
-            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
-          >
+            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]">
             <option value="">Select an option</option>
             <option value="Website URL">Website URL</option>
             <option value="Manual Input">Manual Input</option>
@@ -278,7 +300,6 @@ const InputForm = () => {
               onChange={handleInputChange}
               className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
               placeholder="Enter the website URL"
-              required
               autoComplete="off"
               title="Enter the website URL of the packaged product"
             />
@@ -349,12 +370,21 @@ const InputForm = () => {
             <label className="block font-medium mb-2">Image Upload</label>
             <input
               type="file"
-              name="image"
+              name="frontImage"
               accept="image/*"
               onChange={handleImageUpload}
               className="w-full p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
               required
-              title="Upload an image of the packaged product"
+              title="Upload front image of the packaged product"
+            />
+            <input
+              type="file"
+              name="backImage"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="w-full p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
+              required
+              title="Upload back image of the packaged product"
             />
           </div>
         )}
@@ -381,28 +411,28 @@ const InputForm = () => {
       {/* Display the response from /extract-data */}
       {isFormSubmitted && !responseData && <Loader />}
       {responseData && (
-        <div className="mt-6 p-8 bg-[#fafafa] rounded-lg">
+        <div className="mt-6 p-8 bg-[#fafafa] rounded-lg border shadow-sm   md:w-[60%] lg:w-[60%]">
           <h3 className="text-xl text-center font-bold mb-3">
             Product Details
           </h3>
           <p>
-            <strong>Product Name: </strong> {responseData.food_item_name}
+            <strong>Product Name: </strong> {responseData.item_name}
           </p>
           <p>
-            <strong>Brand: </strong> {responseData.food_item_brand}
+            <strong>Brand: </strong> {responseData.item_brand}
           </p>
           <p>
-            <strong>Ingredients: </strong> {responseData.food_item_ingredients}
+            <strong>Ingredients: </strong> {responseData.item_ingredients}
           </p>
           <p>
-            <strong>Description: </strong> {responseData.food_item_description}
+            <strong>Description: </strong> {responseData.item_description}
           </p>
         </div>
       )}
       {/* Display the final analysis from /analyze-food */}
       {isFormSubmitted && !finalAnalysis && <Loader />}
       {finalAnalysis && (
-        <div className="mt-6 p-8 bg-[#fafafa] rounded-lg flex flex-col items-center">
+        <div className="mt-6 p-8 bg-[#fafafa] rounded-lg flex flex-col items-center border shadow-sm   md:w-[60%] lg:w-[60%]">
           <h3 className="text-xl text-center font-bold mb-3">
             Product Analysis
           </h3>
@@ -415,7 +445,7 @@ const InputForm = () => {
 
       {/* Display the alternatives from /analyze_product */}
       {alternatives && (
-        <div className="mt-6 p-8 bg-[#fafafa] rounded-lg">
+        <div className="mt-6 p-8 bg-[#fafafa] rounded-lg border shadow-sm   md:w-[60%] lg:w-[60%]">
           <h3 className="text-xl text-center font-bold mb-3">Alternatives</h3>
           <div
             dangerouslySetInnerHTML={{ __html: alternatives }}
@@ -432,6 +462,7 @@ const InputForm = () => {
           Check Another Product
         </button>
       )}
+      <canvas ref={canvasRef} style={{ display: "none" }} />
     </div>
   );
 };

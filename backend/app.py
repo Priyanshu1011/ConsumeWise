@@ -10,6 +10,8 @@ import os
 import random
 from werkzeug.utils import secure_filename
 import gemini_api
+import json
+import difflib
 
 # Configure upload folder and allowed file extensions
 UPLOAD_FOLDER = 'uploads/'
@@ -67,10 +69,10 @@ def amazon_scraper(url):
         about_product = about_section.get_text(strip=True) if about_section else 'Details not found'
         
         return {
-            "food_item_name": product_name,
-            "food_item_brand": brand_name,
-            "food_item_ingredients": ingredients,
-            "food_item_description": about_product
+            "item_name": product_name,
+            "item_brand": brand_name,
+            "item_ingredients": ingredients,
+            "item_description": about_product
         }
     else:
         return {"error": f"Failed to retrieve the page. Status code: {response.status_code}"}
@@ -120,10 +122,10 @@ def flipkart_scraper(url):
         
         # Print the extracted information
         return {
-            "food_item_name": product_name,
-            "food_item_brand": brand_name,
-            "food_item_ingredients": ingredients,
-            "food_item_description": about_product
+            "item_name": product_name,
+            "item_brand": brand_name,
+            "item_ingredients": ingredients,
+            "item_description": about_product
         }
     else:
         print(f"Failed to retrieve the page. Status code: {response.status_code}")
@@ -146,6 +148,18 @@ def analyze_food_with_gemini(food_item):
             3. Description Match: Analyze whether the product description matches the actual ingredients and explain any discrepancies, if present.
             
             Ensure the response uses HTML tags such as <h3> for headings and <p> for paragraphs.
+
+            <strong style="color: 'red' if there is dicrepancy between {food_item.description} and {food_item.ingredients}">'Misleading' if discrepancy else 'The description matches the ingredients.'</strong>
+
+            <h3>1. Health Impact</h3>
+            <p>Discuss the potential health effects of consuming this food item. Highlight both positive and negative aspects of its ingredients, and provide a detailed overview of their impact on health.</p>
+
+            <h3>2. Quality</h3>
+            <p>Evaluate the quality of the ingredients. Take into account any preservatives, additives, or artificial components, and provide clear insights into whether the ingredients seem high-quality, natural, or processed.</p>
+
+            <h3>3. Description Match</h3>
+            <p>Analyze if the product description accurately reflects the actual ingredients. Clearly outline any discrepancies and explain their significance. Make sure this section is comprehensive.</p>
+
         """
         
         response = modelAI.generate_content(prompt)
@@ -190,25 +204,27 @@ def allowed_file(filename):
 def analyze_food():
     data = request.get_json()
 
-    food_item_name = data.get('food_item_name')
-    food_item_ingredients = data.get('food_item_ingredients')
-    food_item_description = data.get('food_item_description')
-    food_item_brand = data.get('food_item_brand')
+    item_name = data.get('item_name')
+    item_ingredients = data.get('item_ingredients')
+    item_description = data.get('item_description')
+    item_brand = data.get('item_brand')
 
-    if not all([food_item_name, food_item_ingredients, food_item_description, food_item_brand]):
+    if not all([item_name, item_ingredients, item_description, item_brand]):
         return jsonify({"error": "Missing required food item information"}), 400
 
     # Create a FoodItemRequest object
     food_item = FoodItemRequest(
-        name=food_item_name,
-        ingredients=food_item_ingredients,
-        description=food_item_description,
-        brand=food_item_brand
+        name=item_name,
+        ingredients=item_ingredients,
+        description=item_description,
+        brand=item_brand
     )
 
     try:
         html_analysis = analyze_food_with_gemini(food_item)
+        print(html_analysis)
         alternatives = suggest_healthy_alternatives(food_item)
+        print(alternatives)
 
         return jsonify({
             "message": "Food item analysis successful",
@@ -254,6 +270,36 @@ def upload_file():
         return jsonify(extracted_details)
 
     return jsonify({"error": "File type not allowed"}), 400
+
+@app.route("/get-data", methods=['POST'])
+def get_data():
+    # Get the JSON data from the request
+    data = request.json
+    item_name = data.get("item_name")  # Extract the item_name from the request data
+    print(item_name)
+    if not item_name:
+        return jsonify({"error": "item_name is required"}), 400
+
+    # Read the JSON file (test_data.json)
+    try:
+        with open("test_data.json", "r", encoding="utf-8") as f:
+            test_data = json.load(f)
+    except FileNotFoundError:
+        return jsonify({"error": "test_data.json file not found"}), 500
+    except json.JSONDecodeError:
+        return jsonify({"error": "Error decoding the JSON file"}), 500
+
+    item_names = [item.get("item_name") for item in test_data]
+
+    # Find the closest match to the given item_name
+    closest_matches = difflib.get_close_matches(item_name, item_names, n=1, cutoff=0.6)
+
+    if closest_matches:
+        matching_item_name = closest_matches[0]  # Get the best match
+        matching_item = next(item for item in test_data if item.get("item_name") == matching_item_name)
+        return jsonify(matching_item.get("result")), 200
+    else:
+        return {"message": "Item not found"}, 404
 
 # Endpoint to check if the server is running
 @app.route('/', methods=['GET'])

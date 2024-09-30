@@ -27,12 +27,12 @@ def extract_details(raw_text):
 
 {raw_text}
 
-Provide the information in the following format:
+Provide the information in the following format and do not include ``` in the response:
 {{
-  "food_item_name": "",
-  "food_item_ingredients": "",
-  "food_item_description": "",
-  "food_item_brand": "",
+  "item_name": "",
+  "item_ingredients": "",
+  "item_description": "",
+  "item_brand": "",
   "other_details": {{}}
 }}"""
 
