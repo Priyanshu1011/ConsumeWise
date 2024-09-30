@@ -7,10 +7,7 @@ const InputForm = () => {
   const scraperEndpoint = backendRootURL + "/extract-data";
   const analyzeFoodEndpoint = backendRootURL + "/analyze-food";
   const testDataEndpoint = backendRootURL + "/get-data";
-  const imageOCREndpoint =
-    process.env.NEXT_PUBLIC_ENV === "DEVELOPMENT_ENV"
-      ? backendRootURL + "/upload"
-      : process.env.NEXT_PUBLIC_IMAGE_OCR_ROOT_URL;
+  const imageOCREndpoint = backendRootURL + "/upload";
 
   const [inputType, setInputType] = useState("");
   const [formData, setFormData] = useState({
@@ -207,14 +204,12 @@ const InputForm = () => {
             });
 
             if (analysisResponse.ok) {
-              console.log(
-                "Successfully received a response from /analyze-food"
-              );
+              console.log("Successfully received a response from /get-data");
               const analysisResult = await analysisResponse.json();
               setFinalAnalysis(analysisResult.html_analysis);
               setAlternatives(analysisResult.healthy_alternatives);
             } else {
-              console.error("Failed to fetch data from /analyze-food");
+              console.error("Failed to fetch data from /get-data");
             }
           } else {
             console.error("Failed to fetch data from /img-ocr");
@@ -253,7 +248,8 @@ const InputForm = () => {
       ) : null}
       <form
         onSubmit={handleSubmit}
-        className="bg-[#fafafa] w-[90%] md:w-[60%] lg:w-[33%] p-6 lg:p-10 rounded-lg shadow-[20px_20px_60px_#bebebe,-20px_-20px_60px_#ffffff]">
+        className="bg-[#fafafa] w-[90%] md:w-[60%] lg:w-[33%] p-6 lg:p-10 rounded-lg shadow-[20px_20px_60px_#bebebe,-20px_-20px_60px_#ffffff]"
+      >
         {/* Selecting the website */}
         <div className="mb-4">
           <label className="block font-semibold mb-2">Website</label>
@@ -281,7 +277,8 @@ const InputForm = () => {
               setInputType(e.target.value);
               setIsValid(false); // Reset form validation when changing input type
             }}
-            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]">
+            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
+          >
             <option value="">Select an option</option>
             <option value="Website URL">Website URL</option>
             <option value="Manual Input">Manual Input</option>
