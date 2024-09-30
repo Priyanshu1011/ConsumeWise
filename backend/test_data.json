@@ -1,0 +1,81 @@
+[
+  {
+    "item_name": "PARLE MILK SHAKTI BISCUITS",
+    "item_ingredients": "REFINED WHEAT FLOUR (MAIDA), SUGAR, REFIXED\nPALM OIL, INVERT SUGAR SYRUP, MILK SOLIDS (1.7%), SWEETENED\nCONDENSED MILK, RAISING AGENTS [503 (). 500 (1, 10DISED SALT,\nVITAMINS & MINERALS (0.3%) AND EMULSIFIER OF VEGETABLE ORIGIN\nIDIACETYLTARTARIC AND FATTY ACID ESTERS OF GLYCEROLL\nCONTAINS ADDED FLAVOURS (ARTIFICIAL FLAVOURING SUBSTANCES MILK).",
+    "item_description": "Milk Shakti Biscuits with the goodness of milk\nEnriched with\n(7 Vitamins 2 Minerals",
+    "item_brand": "PARLE",
+    "other_details": {
+      "nutrition_facts": {
+        "amount_per_100g": {
+          "energy": "463 kcal",
+          "protein": "73",
+          "carbohydrate": "753",
+          "fat": "2339",
+          "of which sugars": "14.7",
+          "saturated fat": "6.8",
+          "trans fat": "0"
+        },
+        "amount_per_180g": {
+          "vitamin_a": "90 mcg",
+          "vitamin_b": "0.17 mg",
+          "vitamin_b2": "0.20 ma",
+          "vitamin_b6": "0.30 mg",
+          "pantothenic_acid": "0.75 mg",
+          "folate": "51 mcg",
+          "niacin": "2.10 mg",
+          "calcium": "90 mg",
+          "iron": "32 mg"
+        }
+      }
+    }
+  },
+  {
+    "item_name": "Nyle Dandruff SHAMPOO",
+    "item_ingredients": "Water, Sodium Laureth Sulfate,\nPolydimethylsiloxane, PEG-7 Glyceryl Cocoate,\nCocamide MEÁ, Climbazole, Cocamidopropyl Betaine,\nGlycol Disterate, Salicylic Acid, Hydroxyethyl Urea,\nSodium Chloride, Carbomer, Aloe barbadensis (Aloe)\nJuice, Citrus limon (Lemon) Extract, Fragrance, Yoghurt\nPowder, Hydrolyzed Protein, Guar Hydroxypropyltrimonium\nChloride, PEG-45M, Panthenol, Disodium EDTA, Citric Acid,\nSodium Hydroxide, Methylchloroisothiazolinone and\nMethylisothiazolinone, BHT, Sodium Benzotriazolyl\nButylphenol Sulphonate (and) Buteth-3 (and) Tributyl Citrate.",
+    "item_description": "It gently cleanses and not only fights\ndandruff but also smoothens hair and\nhelps to improve scalp's health.",
+    "item_brand": "Nyle",
+    "other_details": {
+      "Directions for use": "Apply directly on wet hair, lather and rinse\nthoroughly with water.",
+      "Country of Origin": "India",
+      "Net Vol": "1L",
+      "Manufacturer": "CavinKare Pvt. Ltd."
+    }
+  },
+  {
+    "item_name": "Lay's India's Magic Masala Potato Chips",
+    "item_ingredients": "Potato, Edible Vegetable Oils (Palmolein, Rice Bran Oil), Seasoning & Condiments, lodised Salt, Maltodextrin, Sugar, Tomato Powder, Acidity Regulators (330, 296, 334), Flavour (Natural and Nature Identical Flavouring Substances), Antioxidant (551), Color (160c)).",
+    "item_description": "Lay's India's Magic Masala Potato Chips are made with carefully selected potatoes for their exceptional taste and texture, and are cooked in a blend of spices to give them a unique and delicious flavor. They are a perfect snack for any occasion.",
+    "item_brand": "Lay's",
+    "other_details": {
+      "serving_size": "30g",
+      "energy_per_serving": "167 kcal",
+      "nutritional_information": {
+        "protein": "6.99",
+        "carbohydrate": "53.49",
+        "total_sugars": "259",
+        "added_sugars": "0.29",
+        "total_fat": "33.1 g",
+        "saturated_fat": "12.59",
+        "trans_fat": "0.19",
+        "sodium": "826 mg"
+      }
+    },
+    "result": {
+      "html_analysis": "<p style=\"color: red;\"><strong>Misleading</strong></p><h3>1. Health Impact</h3><p><strong>Positive Aspects:</strong></p><ul><li><strong>Potatoes:</strong> A good source of complex carbohydrates, vitamins , and minerals .</li><li><strong>Rice Bran Oil:</strong> Contains antioxidants and may promote heart health.</li></ul><p><strong>Negative Aspects:</strong></p><ul><li><strong>Palmolein Oil:</strong> High in saturated fat, which can increase cholesterol levels.</li><li><strong>Acidity Regulators :</strong> Can increase the acidity of urine, which may lead to kidney stones.</li><li><strong>Natural and Nature Identical Flavouring Substances:</strong> Can be derived from natural or artificial sources, and their safety may vary.</li><li><strong>Antioxidant :</strong> Butylated hydroxytoluene , may be associated with liver damage in high doses.</li><li><strong>Color :</strong> Beta-carotene, a natural colorant, has no known adverse health effects.</li></ul><h3>2. Quality</h3><p>The ingredients list contains a mix of natural and processed components:</p><ul><li><strong>Natural:</strong> Potatoes, tomato powder</li><li><strong>Processed:</strong> Edible vegetable oils , maltodextrin, sugar, acidity regulators, flavoring substances, antioxidant, color</li></ul><p>While some processed ingredients may raise concerns, the presence of natural whole potatoes and rice bran oil provides some nutritional value.</p><h3>3. Description Match</h3><p>The product description mainly focuses on the unique flavor and taste of the potato chips, without mentioning specific ingredients.</p><strong>The description matches the ingredients to some extent:</strong><ul><li><strong>Potatoes: </strong> Listed as the first ingredient.</li><li><strong>Spices:</strong> Included in the \"Seasoning &amp; Condiments.\"</li><li><strong>Natural Flavors: </strong>Indicated in the ingredients.</li></ul><strong>Discrepancy:</strong><p>The description implies that the chips are made with \"carefully selected potatoes for their exceptional taste and texture.\" However, the ingredient list does not specify the quality or selection process of the potatoes used.</p>",
+      "healthy_alternatives": "<h3>Healthy Alternatives to Lay's India's Magic Masala Potato Chips</h3><p>Here are 3-5 healthier alternatives to Lay's India's Magic Masala Potato Chips:</p><ol>  <li><b>Baked Potato Chips</b>: Baked potato chips are a healthier alternative to fried potato chips because they are made with less oil and contain fewer calories. They also have a crunchy texture that is similar to fried potato chips.<br><br>  <li><b>Popcorn</b>: Popcorn is a whole-grain snack that is low in calories and fat. It is also a good source of fiber. Air-popped popcorn is the healthiest way to enjoy popcorn.<br><br>  <li><b>Fruit</b>: Fruit is a healthy snack that is packed with vitamins, minerals, and fiber. It is also a good source of antioxidants. Fresh fruit is the healthiest way to enjoy fruit, but frozen fruit or dried fruit are also healthy options.<br><br>  <li><b>Vegetable Sticks</b>: Vegetable sticks are a healthy snack that is low in calories and fat. They are also a good source of fiber. Vegetables such as carrots, celery, and cucumbers can be cut into sticks and enjoyed with a healthy dip.<br><br>  <li><b>Trail Mix</b>: Trail mix is a healthy snack that is made with a combination of nuts, seeds, and dried fruit. It is a good source of protein, fiber, and healthy fats. Trail mix can be customized to your own preferences, so you can make it as healthy or as indulgent as you like.</li></ol>"
+    }
+  },
+  {
+    "item_name": "HIDE & SEEK Chocolate Chip Cookies",
+    "item_ingredients": "REFINED WHEAT FLOUR (MAIDA), CHOCOLATE (23%)[SUGAR, COCOA SOLIDS, COCOA BUTTER, DEXTROSE, EMULSIFIER OF VEGETABLE ORIGIN (SOYA LECITHIN)AND ARTIFICIAL FLAVOURING SUBSTANCES-VANILLA ], SUGAR, REFINED PALM OIL, INVERT SUGAR SYRUP, RAISING AGENTS [ 503 (ii), 500 (i) 1, COCOA SOLIDS, IODISED SALT AND EMULSIFIER OF VEGETABLE ORIGIN [DIACETYLTARTARIC AND FATTY ACID ESTERS OF GLYCEROL].",
+    "item_description": "WORLD'S BEST MOULDED Chocolate Chip Cookies",
+    "item_brand": "PARLE PLATINA",
+    "other_details": {
+      "artificial_flavour": "Artificial flavouring substances-Vanilla"
+    },
+    "result": {
+      "html_analysis": "<p style=\"color: red;\" ><strong>Misleading</strong></p><h1>1. Health Impact:</h1><p><strong>Positive</strong></p><p><strong>Refined Wheat Flour:</strong> A source of carbohydrates that provides energy.</p><p><strong>Chocolate:</strong> Contains antioxidants that may benefit heart health.</p><p><strong>Negative</strong></p><p><strong>Sugar:</strong> High levels can contribute to weight gain, dental problems, and increased risk of chronic diseases.</p><p><strong>Refined Palm Oil:</strong> A high saturated fat content that can raise cholesterol levels and increase the risk of heart disease.</p><p><strong>Artificial Flavouring Substances:</strong> May contain harmful chemicals that pose potential health risks.</p><h1>2. Quality:</h1><p><strong>Refined Wheat Flour:</strong> A refined grain with limited nutritional value.</p><p><strong>Chocolate:</strong> Contains cocoa solids, but the amount is not specified, affecting its quality.</p><p><strong>Invert Sugar Syrup:</strong> Adds sweetness but contributes to increased sugar intake.</p><p><strong>Raising Agents:</strong> Artificial ingredients that cause the cookies to rise but can be harmful to health if consumed excessively.</p><p><strong>Emulsifier of Vegetable Origin:</strong> Artificial additives that may be linked to digestive issues and allergic reactions.</p><h1>3. Description Match:</h1><p>The product description claims to be \"WORLD'S BEST MOULDED Chocolate Chip Cookies\" but the ingredients list does not mention any unique or high-quality features to support this claim.</p>",
+      "healthy_alternatives": "<h3>Healthy Alternatives to HIDE & SEEK Chocolate Chip Cookies:</h3><ul><li><h4>Nature's Path Love Crunch Granola Cookies</h4><p>Made with organic whole grains, nuts, seeds, and sweetened with fruit juice concentrate. Contains less sugar and unhealthy fats compared to HIDE & SEEK cookies.</p>  </li>  <li>    <h4>KIND Minis Dark Chocolate Chunk</h4>    <p>Packed with whole grains, nuts, and dark chocolate. Contains no refined sugars and is a good source of fiber and healthy fats, unlike HIDE & SEEK cookies.</p>  </li>  <li>    <h4>Annie's Homegrown Organic Bunny Grahams</h4>    <p>Made with organic graham flour and sweeteners. Contains no artificial flavors or preservatives, providing a healthier snacking option.</p>  </li><li><h4>RXBAR Mini Chocolate Chip</h4><p>Made with egg whites, dates, nuts, and a touch of chocolate. Contains no added sugar, is high in protein, and provides sustained energy unlike HIDE & SEEK cookies.</p>  </li><li><h4>Quaker Chewy Chocolate Chip Granola Bars</h4><p>Made with whole grain oats, contains less sugar compared to HIDE & SEEK cookies, and provides a good source of fiber and energy for an active lifestyle.</p></li></ul>"
+    }
+  }
+]
