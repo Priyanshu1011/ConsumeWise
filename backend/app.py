@@ -50,6 +50,7 @@ class FoodItemRequest(BaseModel):
     brand: str
     description: str
     ingredients: str
+    language: str
 
 # Amazon scraper function
 def amazon_scraper(url):
@@ -131,25 +132,25 @@ def flipkart_scraper(url):
         print(f"Failed to retrieve the page. Status code: {response.status_code}")
 
 # Generates the food analysis report
-def analyze_food_with_gemini(food_item):
+def analyze_food_with_gemini(item):
     try:
         prompt = f"""
             Analyze the following food item in a structured format with clear section headings:
             
-            Name: {food_item.name}
-            Ingredients: {food_item.ingredients}
-            Description: {food_item.description}
-            Brand: {food_item.brand}
+            Name: {item.name}
+            Ingredients: {item.ingredients}
+            Description: {item.description}
+            Brand: {item.brand}
             
-            Please provide the analysis with the following sections:
+            Please provide the analysis with the following sections in {item.language}:
 
             1. Health Impact: Discuss the potential health effects of consuming this food item, highlighting the positive and negative aspects of its ingredients.
             2. Quality: Evaluate the quality of the ingredients used, taking into consideration any additives or preservatives.
             3. Description Match: Analyze whether the product description matches the actual ingredients and explain any discrepancies, if present.
             
-            Ensure the response uses HTML tags such as <h3> for headings and <p> for paragraphs.
+            Ensure the response uses HTML tags such as <h3> for headings and <p> for paragraphs and is in {item.language}.
 
-            <strong style="color: 'red' if there is dicrepancy between {food_item.description} and {food_item.ingredients}">'Misleading' if discrepancy else 'The description matches the ingredients.'</strong>
+            <strong style="color: 'red' if there is dicrepancy between {item.description} and {item.ingredients}">'Misleading' if discrepancy else 'The description matches the ingredients.'</strong>
 
             <h3>1. Health Impact</h3>
             <p>Discuss the potential health effects of consuming this food item. Highlight both positive and negative aspects of its ingredients, and provide a detailed overview of their impact on health.</p>
@@ -174,18 +175,18 @@ def analyze_food_with_gemini(food_item):
         raise Exception(f"Error analyzing food item: {str(e)}")
 
 # Generates healthier alternatives
-def suggest_healthy_alternatives(food_item):
+def suggest_healthy_alternatives(item):
     try:
         prompt = f"""
             Suggest healthy alternatives for the following food item:
             
-            Name: {food_item.name}
-            Ingredients: {food_item.ingredients}
-            Description: {food_item.description}
-            Brand: {food_item.brand}
+            Name: {item.name}
+            Ingredients: {item.ingredients}
+            Description: {item.description}
+            Brand: {item.brand}
             
             Provide a list of 3-5 healthier alternatives with product brand, along with a brief explanation of why they are healthier.
-            Ensure the response uses HTML tags such as <h3> for headings and <p> for paragraphs.
+            Ensure the response uses HTML tags such as <h3> for headings and <p> for paragraphs and it is in {item.language}.
         """
         
         response = modelAI.generate_content(prompt)
@@ -203,27 +204,29 @@ def allowed_file(filename):
 @app.route('/analyze-food', methods=['POST'])
 def analyze_food():
     data = request.get_json()
-
     item_name = data.get('item_name')
     item_ingredients = data.get('item_ingredients')
     item_description = data.get('item_description')
     item_brand = data.get('item_brand')
+    language = data.get('language')
+    print(language)
 
     if not all([item_name, item_ingredients, item_description, item_brand]):
         return jsonify({"error": "Missing required food item information"}), 400
 
     # Create a FoodItemRequest object
-    food_item = FoodItemRequest(
+    item = FoodItemRequest(
         name=item_name,
         ingredients=item_ingredients,
         description=item_description,
-        brand=item_brand
+        brand=item_brand,
+        language=language
     )
 
     try:
-        html_analysis = analyze_food_with_gemini(food_item)
+        html_analysis = analyze_food_with_gemini(item)
         print(html_analysis)
-        alternatives = suggest_healthy_alternatives(food_item)
+        alternatives = suggest_healthy_alternatives(item)
         print(alternatives)
 
         return jsonify({
