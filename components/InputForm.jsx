@@ -27,6 +27,7 @@ const InputForm = () => {
   const [alternatives, setAlternatives] = useState(null);
   const [showModal, setShowModal] = useState(false); // Should the error modal popup be shown
   const [modalMessage, setModalMessage] = useState(""); // Modal message to be shown
+  const [showGuide, setShowGuide] = useState(false);
   const refreshPage = () => {
     window.location.reload();
   };
@@ -248,40 +249,96 @@ const InputForm = () => {
                 setShowModal(false);
                 setModalMessage("");
                 refreshPage();
-              }}>
+              }}
+            >
               Try Again
             </button>
           </div>
         </div>
       ) : null}
+
+      {/* Button and pop-up for steps to use the website */}
+      <button
+        onClick={() => setShowGuide(true)}
+        className="px-4 py-2 mb-4 font-semibold text-white bg-[#34A853] rounded hover:bg-green-600 select-none"
+      >
+        How to use the website?
+      </button>
+
+      {showGuide && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="flex flex-col justify-around items-center py-10 px-10 lg:py-6 lg:px-10 rounded-lg w-[99%] h-[95%] md:w-3/4 md:h-3/4 bg-white">
+            <h2 className="text-xl md:text-2xl font-bold">
+              How To Use Our Website?
+            </h2>
+            <ol className="text-md md:text-lg list-decimal">
+              <li>
+                Select the language in which you want the analysis of the food
+                product.
+              </li>
+              <li>
+                Select the input type:{" "}
+                <span className="font-semibold">Website URL</span>,{" "}
+                <span className="font-semibold">Manual Input</span> or{" "}
+                <span className="font-semibold">Image Upload</span>.
+              </li>
+              <li>
+                If you have selected{" "}
+                <span className="font-semibold">Website URL</span>, choose the
+                website from the list and enter the link to the product.
+              </li>
+              <li>
+                If you have selected{" "}
+                <span className="font-semibold">Manual Input</span>, enter the
+                product name, brand, ingredients and description accurately.
+              </li>
+              <li>
+                If you have selected{" "}
+                <span className="font-semibold">Image Upload</span>, upload the
+                images of the front-side and back-side of the product.
+              </li>
+              <li>
+                After submitting, you can check the{" "}
+                <span className="font-semibold">
+                  product details, product analysis and other healthy
+                  alternatives
+                </span>{" "}
+                in your preferred language!
+              </li>
+              <li>
+                You can click on the button{" "}
+                <span className="font-semibold">"Check Another Product"</span>{" "}
+                to check other food products.
+              </li>
+            </ol>
+            <p className="text-lg md:text-xl lg:text-2xl text-center">
+              All the best on your journey to{" "}
+              <span className="text-green-500">Consume Wise</span>ly!
+            </p>
+            <button
+              onClick={() => setShowGuide(false)}
+              className="px-4 py-2 mt-4 w-[100px] font-semibold text-white bg-[#34A853] rounded hover:bg-green-600 select-none"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
       <form
         onSubmit={handleSubmit}
-        className="bg-[#fafafa] w-[90%] md:w-[60%] lg:w-[33%] p-6 lg:p-10 rounded-lg shadow-[20px_20px_60px_#bebebe,-20px_-20px_60px_#ffffff]">
-        {/* Selecting the website */}
-        <div className="mb-4">
-          <label className="block font-semibold mb-2">Website</label>
-          <select
-            name="website"
-            value={formData.website}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
-            title="Select the website in which the packaged product is present">
-            <option value="">Select a website</option>
-            <option value="Amazon">Amazon</option>
-            <option value="Flipkart">Flipkart</option>
-            <option value="Bigbasket">Bigbasket</option>
-            <option value="Jiomart">Jiomart</option>
-          </select>
-        </div>
+        className="bg-[#fafafa] w-[90%] md:w-[60%] lg:w-[33%] p-6 lg:p-10 rounded-lg shadow-[10px_10px_60px_#bebebe,-10px_-10px_60px_#ffffff]"
+      >
         {/* Language selection dropdown */}
         <div className="mb-4">
-          <label className="block font-semibold mb-2">Language</label>
+          <label className="block font-semibold mb-2">Preferred Language</label>
           <select
             name="language"
             value={formData.language}
             onChange={handleInputChange}
             className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
-            title="Select the language for analysis">
+            title="Select your preferred language for the analysis"
+          >
             <option value="English">English</option>
             <option value="Hindi">Hindi</option>
             <option value="Tamil">Tamil</option>
@@ -290,20 +347,41 @@ const InputForm = () => {
         </div>
         {/* Dropdown to choose input type */}
         <div className="mb-4">
-          <label className="block font-semibold mb-2">Select Input Type</label>
+          <label className="block font-semibold mb-2">Input Type</label>
           <select
             value={inputType}
             onChange={(e) => {
               setInputType(e.target.value);
               setIsValid(false); // Reset form validation when changing input type
             }}
-            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]">
+            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
+          >
             <option value="">Select an option</option>
             <option value="Website URL">Website URL</option>
             <option value="Manual Input">Manual Input</option>
             <option value="Image Upload">Image Upload</option>
           </select>
         </div>
+
+        {/* Selecting the website */}
+        {inputType === "Website URL" && (
+          <div className="mb-4">
+            <label className="block mb-2">Website</label>
+            <select
+              name="website"
+              value={formData.website}
+              onChange={handleInputChange}
+              className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
+              title="Select the website in which the packaged product is present"
+            >
+              <option value="">Select a website</option>
+              <option value="Amazon">Amazon</option>
+              <option value="Flipkart">Flipkart</option>
+              <option value="Bigbasket">Bigbasket</option>
+              <option value="Jiomart">Jiomart</option>
+            </select>
+          </div>
+        )}
 
         {/* Conditional inputs based on selection */}
         {inputType === "Website URL" && (
@@ -383,7 +461,18 @@ const InputForm = () => {
 
         {inputType === "Image Upload" && (
           <div className="mb-4">
-            <label className="block font-medium mb-2">Upload front and back image of the packaged product <br/> Front image should include the product cover section and Back image should include the ingredients and details section</label>
+            <label className="block font-medium mb-2">
+              Upload front and back images of the packaged product. <br />{" "}
+              <span className="italic">
+                <ul>
+                  <li>Front image should include the product cover section.</li>
+                  <li>
+                    Back image should include the ingredients and details
+                    section.
+                  </li>
+                </ul>
+              </span>
+            </label>
             <input
               type="file"
               name="frontImage"
@@ -416,15 +505,16 @@ const InputForm = () => {
         )} */}
         <button
           type="submit"
-          className={`w-full bg-[#34A853] text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00695C] ${
+          className={`w-full bg-[#34A853] hover:bg-green-600 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00695C] ${
             isValid ? "" : "opacity-50 cursor-not-allowed"
           }`}
-          disabled={!isValid}>
+          disabled={!isValid}
+        >
           Submit
         </button>
       </form>
       {/* Display the response from /extract-data */}
-      {isFormSubmitted && !responseData && <Loader />}
+      {/* {isFormSubmitted && !responseData && <Loader />} */}
       {responseData && (
         <div className="mt-6 p-8 bg-[#fafafa] rounded-lg border shadow-sm   md:w-[60%] lg:w-[60%]">
           <h3 className="text-xl text-center font-bold mb-3">
@@ -445,7 +535,7 @@ const InputForm = () => {
         </div>
       )}
       {/* Display the final analysis from /analyze-food */}
-      {isFormSubmitted && !finalAnalysis && <Loader />}
+      {/* {isFormSubmitted && !finalAnalysis && <Loader />} */}
       {finalAnalysis && (
         <div className="mt-6 p-8 bg-[#fafafa] rounded-lg flex flex-col items-center border shadow-sm   md:w-[60%] lg:w-[60%]">
           <h3 className="text-xl text-center font-bold mb-3">
@@ -453,7 +543,8 @@ const InputForm = () => {
           </h3>
           <div
             dangerouslySetInnerHTML={{ __html: finalAnalysis }}
-            id="analysis_html"></div>
+            id="analysis_html"
+          ></div>
         </div>
       )}
 
@@ -463,17 +554,20 @@ const InputForm = () => {
           <h3 className="text-xl text-center font-bold mb-3">Alternatives</h3>
           <div
             dangerouslySetInnerHTML={{ __html: alternatives }}
-            id="alternatives_html"></div>
+            id="alternatives_html"
+          ></div>
         </div>
       )}
       {/* A button to refresh page and check another product */}
       {alternatives && (
         <button
           onClick={refreshPage}
-          className="my-4 px-4 py-2 bg-blue-100 font-semibold rounded-lg shadow-md hover:bg-blue-200 hover:shadow-lg focus:outline-none">
+          className="my-4 px-4 py-2 bg-blue-100 font-semibold rounded-lg shadow-md hover:bg-blue-200 hover:shadow-lg focus:outline-none"
+        >
           Check Another Product
         </button>
       )}
+      {isFormSubmitted && (!finalAnalysis || !responseData) && <Loader />}
       <canvas ref={canvasRef} style={{ display: "none" }} />
     </div>
   );
