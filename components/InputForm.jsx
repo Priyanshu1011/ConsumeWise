@@ -18,6 +18,7 @@ const InputForm = () => {
     ingredients: "",
     description: "",
     image: "",
+    language: "",
   });
   const [isValid, setIsValid] = useState(false); // If the form inputs submitted are valid or not
   const [isFormSubmitted, setIsFormSubmitted] = useState(false); // If form has been submitted
@@ -26,7 +27,6 @@ const InputForm = () => {
   const [alternatives, setAlternatives] = useState(null);
   const [showModal, setShowModal] = useState(false); // Should the error modal popup be shown
   const [modalMessage, setModalMessage] = useState(""); // Modal message to be shown
-
   const refreshPage = () => {
     window.location.reload();
   };
@@ -120,7 +120,10 @@ const InputForm = () => {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify(result),
+              body: JSON.stringify({
+                ...result,
+                language: formData.language,
+              }),
             });
 
             if (analysisResponse.ok) {
@@ -158,7 +161,10 @@ const InputForm = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(request),
+            body: JSON.stringify({
+              ...result,
+              language: formData.language,
+            }),
           });
 
           if (analysisResponse.ok) {
@@ -195,12 +201,15 @@ const InputForm = () => {
             setResponseData(result);
 
             // 2. Food analysis endpoint is called
-            const analysisResponse = await fetch(testDataEndpoint, {
+            const analysisResponse = await fetch(analyzeFoodEndpoint, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify(result),
+              body: JSON.stringify({
+                ...result,
+                language: formData.language,
+              }),
             });
 
             if (analysisResponse.ok) {
@@ -239,8 +248,7 @@ const InputForm = () => {
                 setShowModal(false);
                 setModalMessage("");
                 refreshPage();
-              }}
-            >
+              }}>
               Try Again
             </button>
           </div>
@@ -248,8 +256,7 @@ const InputForm = () => {
       ) : null}
       <form
         onSubmit={handleSubmit}
-        className="bg-[#fafafa] w-[90%] md:w-[60%] lg:w-[33%] p-6 lg:p-10 rounded-lg shadow-[20px_20px_60px_#bebebe,-20px_-20px_60px_#ffffff]"
-      >
+        className="bg-[#fafafa] w-[90%] md:w-[60%] lg:w-[33%] p-6 lg:p-10 rounded-lg shadow-[20px_20px_60px_#bebebe,-20px_-20px_60px_#ffffff]">
         {/* Selecting the website */}
         <div className="mb-4">
           <label className="block font-semibold mb-2">Website</label>
@@ -258,8 +265,7 @@ const InputForm = () => {
             value={formData.website}
             onChange={handleInputChange}
             className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
-            title="Select the website in which the packaged product is present"
-          >
+            title="Select the website in which the packaged product is present">
             <option value="">Select a website</option>
             <option value="Amazon">Amazon</option>
             <option value="Flipkart">Flipkart</option>
@@ -267,7 +273,21 @@ const InputForm = () => {
             <option value="Jiomart">Jiomart</option>
           </select>
         </div>
-
+        {/* Language selection dropdown */}
+        <div className="mb-4">
+          <label className="block font-semibold mb-2">Language</label>
+          <select
+            name="language"
+            value={formData.language}
+            onChange={handleInputChange}
+            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
+            title="Select the language for analysis">
+            <option value="English">English</option>
+            <option value="Hindi">Hindi</option>
+            <option value="Tamil">Tamil</option>
+            <option value="Spanish">Spanish</option>
+          </select>
+        </div>
         {/* Dropdown to choose input type */}
         <div className="mb-4">
           <label className="block font-semibold mb-2">Select Input Type</label>
@@ -277,8 +297,7 @@ const InputForm = () => {
               setInputType(e.target.value);
               setIsValid(false); // Reset form validation when changing input type
             }}
-            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]"
-          >
+            className="w-full p-2 border border-[#00695C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#34A853]">
             <option value="">Select an option</option>
             <option value="Website URL">Website URL</option>
             <option value="Manual Input">Manual Input</option>
@@ -400,8 +419,7 @@ const InputForm = () => {
           className={`w-full bg-[#34A853] text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00695C] ${
             isValid ? "" : "opacity-50 cursor-not-allowed"
           }`}
-          disabled={!isValid}
-        >
+          disabled={!isValid}>
           Submit
         </button>
       </form>
@@ -435,8 +453,7 @@ const InputForm = () => {
           </h3>
           <div
             dangerouslySetInnerHTML={{ __html: finalAnalysis }}
-            id="analysis_html"
-          ></div>
+            id="analysis_html"></div>
         </div>
       )}
 
@@ -446,16 +463,14 @@ const InputForm = () => {
           <h3 className="text-xl text-center font-bold mb-3">Alternatives</h3>
           <div
             dangerouslySetInnerHTML={{ __html: alternatives }}
-            id="alternatives_html"
-          ></div>
+            id="alternatives_html"></div>
         </div>
       )}
       {/* A button to refresh page and check another product */}
       {alternatives && (
         <button
           onClick={refreshPage}
-          className="my-4 px-4 py-2 bg-blue-100 font-semibold rounded-lg shadow-md hover:bg-blue-200 hover:shadow-lg focus:outline-none"
-        >
+          className="my-4 px-4 py-2 bg-blue-100 font-semibold rounded-lg shadow-md hover:bg-blue-200 hover:shadow-lg focus:outline-none">
           Check Another Product
         </button>
       )}
