@@ -383,7 +383,7 @@ const InputForm = () => {
 
         {inputType === "Image Upload" && (
           <div className="mb-4">
-            <label className="block font-medium mb-2">Upload front and back image of the packaged product <br/> Front image should product cover section and Back image should include the ingredients and details section</label>
+            <label className="block font-medium mb-2">Upload front and back image of the packaged product <br/> Front image should include the product cover section and Back image should include the ingredients and details section</label>
             <input
               type="file"
               name="frontImage"
