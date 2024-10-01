@@ -307,7 +307,9 @@ const InputForm = () => {
               </li>
               <li>
                 You can click on the button{" "}
-                <span className="font-semibold">"Check Another Product"</span>{" "}
+                <span className="font-semibold">
+                  &quot;Check Another Product&quot;
+                </span>{" "}
                 to check other food products.
               </li>
             </ol>
