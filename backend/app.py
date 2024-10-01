@@ -16,7 +16,7 @@ import difflib
 
 # Configure upload folder and allowed file extensions
 UPLOAD_FOLDER = 'uploads/'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {'png','jpeg', 'jpg'}
 
 # ScrapingBee client setup
 SCRAPINGBEE_API_KEY = os.environ.get('SCRAPINGBEE_API_KEY')  # Set your ScrapingBee API key
