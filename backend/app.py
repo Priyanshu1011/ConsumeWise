@@ -22,6 +22,9 @@ ALLOWED_EXTENSIONS = {'png','jpeg', 'jpg'}
 SCRAPINGBEE_API_KEY = os.environ.get('SCRAPINGBEE_API_KEY')  # Set your ScrapingBee API key
 scrapingbee_client = ScrapingBeeClient(api_key=SCRAPINGBEE_API_KEY)
 
+# Setting up the Google Gemini API
+GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+
 app = Flask(__name__)
 CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -30,8 +33,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# Setting up the Google Gemini API
-GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+
 if not GOOGLE_API_KEY:
     raise Exception("Google API Key is missing. Please set the GOOGLE_API_KEY environment variable.")
 configure(api_key=GOOGLE_API_KEY)
