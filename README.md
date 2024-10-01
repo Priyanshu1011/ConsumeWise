@@ -66,7 +66,9 @@ python app.py
   - `GET /`: To check if the server is running.
   - `POST /extract-data`: To scrape the product data from other websites.
   - `POST /analyze-food`: To generate an analysis report and healthy alternatives of the food product.
-  - `POST /upload`: To extract the product data from the uploaded image.
+  - `POST /upload`: To extract the product data from the uploaded images.
+  - `POST /get-data`: To extract the product data from images for testing purposes.
+
 - Sample request payloads:
 
   - `POST /extract-data`
@@ -89,10 +91,10 @@ python app.py
   {
     "item_name": "Doritos Nacho Chips - Nacho Cheese Flavour",
 
+    "item_brand": "Doritos",
+
     "item_ingredients": "Corn (77%), Edible Vegetable Oli (Palmolein), Seasoning (Milk Solids, Refined Wheat Flour, Iodised Salt, Flavour (Natural and Nature Identical Flavouring Substances), Cheese Powder, Tomato Powder, Spices & Condiments, Anticaking agent (551), Color (160c), Acidity Regulator (330)). As flavouring agent. Contains Onion and Garlic.",
 
-    "item_description": "This is a Vegetarian product. About this item: BOLD FLAVOUR: Savory Nacho Cheese flavour that will ignite your senses. SELECT GOLDEN CORN: Made from select golden corn of the highest quality. EXTREME CRUNCH: A snack that you can not only taste but also hear. EDGY TRIANGULAR SHAPE: A nacho chip that's always on point. VERSATILE SNACK: Enjoy it by itself or with a salsa dip. SHELF LIFE: Best quality and flavour if consumed within 180 days. See more product details",
-
-      "item_brand": "Doritos"
+    "item_description": "This is a Vegetarian product. About this item: BOLD FLAVOUR: Savory Nacho Cheese flavour that will ignite your senses. SELECT GOLDEN CORN: Made from select golden corn of the highest quality. EXTREME CRUNCH: A snack that you can not only taste but also hear. EDGY TRIANGULAR SHAPE: A nacho chip that's always on point. VERSATILE SNACK: Enjoy it by itself or with a salsa dip. SHELF LIFE: Best quality and flavour if consumed within 180 days. See more product details"
   }
   ```
