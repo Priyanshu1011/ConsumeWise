@@ -33,7 +33,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 # Setting up the Google Gemini API
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 if not GOOGLE_API_KEY:
-    raise Exception("Google API Key is missing. Please set the GOOGLE_API_KEY environment variable.")
+    raise Exception("Google API Key is missing. Please set the GOOGLE_API_KEY environment variable using an appropriate key.")
 configure(api_key=GOOGLE_API_KEY)
 
 # Initializing the Generative Model
@@ -301,7 +301,7 @@ def get_data():
 # Endpoint to check if the server is running
 @app.route('/', methods=['GET'])
 def read_root():
-    return {"message": "Product Analysis API"}
+    return {"message": "Product Analysis API is live"}
 
 
 if __name__ == "__main__":
