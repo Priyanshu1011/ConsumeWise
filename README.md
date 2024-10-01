@@ -80,6 +80,7 @@ python app.py
       "website": "Flipkart",
       "url": <A Flipkart URL of a food product>,
       "productName": "",
+      "language": "",
       "productBrand": "",
       "ingredients": "",
       "description": "",
